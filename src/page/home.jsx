@@ -20,9 +20,9 @@ function Home() {
   if (isLoading) return <h1>Data loading... ⌛</h1>;
   return (
     <>
-      <div>
+      <div className="mr-5">
         <p className="text-4xl text-center mb-4 text-white">Anime top</p>
-        <div className="grid grid-cols-4 gap-7">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-9">
           {topAnime.map((anime) => (
             <div key={anime.mal_id} className="flex flex-col text-center">
               <img

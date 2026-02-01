@@ -28,7 +28,7 @@ const CustomLink = ({ to, children, ...props }) => {
 
 function Header() {
   return (
-    <header className="max-w-4/4 mt-10">
+    <header className="max-w-4/4 mt-10 mr-5">
       <div>
         <div className="flex text-center items-center">
           <div className="mr-32">
@@ -63,7 +63,7 @@ function Header() {
                   border-transparent  focus:border-2 focus:border-white  placeholder-white outline-none"
                 />
               </div>
-              <div className="flex gap-6">
+              <div className="flex gap-6 items-center">
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -73,7 +73,7 @@ function Header() {
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.1, backgroundColor: "#bd00ff" }}
-                  whileTap={{ scale: 0.9 }}
+                  whileTap={{ scale: 0.9, backgroundColor: "#C026D3" }}
                   initial={{ backgroundColor: "transparent" }}
                   className="w-32 h-11 bg-transparent border-2 border-fuchsia-600 rounded-md cursor-pointer"
                 >
