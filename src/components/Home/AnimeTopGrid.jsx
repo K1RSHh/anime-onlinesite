@@ -32,9 +32,11 @@ function AnimeTopGrid() {
 
   return (
     <>
-      <div className="mr-5">
-        <p className="text-4xl ml-5 mb-4 text-white">Anime top</p>
-        <div className="relative grid grid-cols-5 gap-4 ">
+      <div>
+        <p className="text-4xl text-center md:text-left  mb-4 text-white">
+          Anime top
+        </p>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px gap-4">
           {topAnime.map((anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} />
           ))}

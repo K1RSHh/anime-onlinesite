@@ -29,10 +29,10 @@ const CustomLink = ({ to, children, ...props }) => {
 
 function Header() {
   return (
-    <header className="max-w-4/4 mt-10 mr-5">
+    <header className="max-w-4/4 mt-4 md:mt-10 md:mr-5 px-4">
       <div>
         <div className="flex text-center items-center">
-          <div className="mr-32">
+          <div className="md:mr-32 flex m-auto">
             <Link to="/">
               <motion.span
                 whileHover={{ scale: 1.08 }}
@@ -40,11 +40,13 @@ function Header() {
                 className="flex gap-2"
               >
                 <img src={logo} alt="Logo" />
-                <p className="Header-text text-5xl">Anime Online.</p>
+                <p className="Header-text text-2xl md:text-5xl">
+                  Anime Online.
+                </p>
               </motion.span>
             </Link>
           </div>
-          <div>
+          <div className="hidden md:flex">
             <div className="flex justify-between">
               <div className="flex justify-between gap-14 mr-8 items-center">
                 <CustomLink to="/" end>
@@ -53,7 +55,7 @@ function Header() {
                 <CustomLink to="/news">News</CustomLink>
                 <CustomLink to="/categories">Categories</CustomLink>
               </div>
-              <div className="relative w-full max-w-md mr-6">
+              <div className="relative w-full md:max-w-md mr-6">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <Search className="w-5 h-5 text-white" />
                 </div>

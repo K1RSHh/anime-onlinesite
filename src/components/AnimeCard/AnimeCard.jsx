@@ -20,7 +20,7 @@ const AnimeCard = ({ anime }) => {
               # {anime.rank}
             </div>
             <img
-              className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
               src={anime.images.jpg.image_url}
               alt={anime.title}
             />
@@ -70,8 +70,8 @@ const AnimeCard = ({ anime }) => {
               <div
                 className={
                   anime.status === "Currently Airing"
-                    ? "text-green-400"
-                    : "text-white"
+                    ? "text-fuchsia-400"
+                    : "text-green-400"
                 }
               >
                 {anime.status === "Currently Airing" ? "Ongoing" : "Finished"}
