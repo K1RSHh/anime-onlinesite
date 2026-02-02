@@ -38,7 +38,7 @@ function Header() {
                 whileTap={{ scale: 0.9 }}
                 className="flex gap-2"
               >
-                <img src="/public/Header/Logo.svg" alt="Logo" />
+                <img src="../../../public/Header/Logo.svg" alt="Logo" />
                 <p className="Header-text text-5xl">Anime Online.</p>
               </motion.span>
             </Link>
