@@ -59,7 +59,7 @@ function Header() {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="block w-full p-3.5 pl-10 text-sm text-white bg-stone-800 rounded-lg border-2
+                  className="block w-full p-3 pl-10 text-sm text-white bg-stone-800 rounded-lg border-2
                   border-transparent  focus:border-2 focus:border-white  placeholder-white outline-none"
                 />
               </div>
