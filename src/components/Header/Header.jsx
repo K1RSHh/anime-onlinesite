@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { NavLink, Link } from "react-router";
 import { Search } from "lucide-react";
+import logo from "../../../public/Header/Logo.svg";
 import "./Header.css";
 
 const CustomLink = ({ to, children, ...props }) => {
@@ -38,7 +39,7 @@ function Header() {
                 whileTap={{ scale: 0.9 }}
                 className="flex gap-2"
               >
-                <img src="../../../public/Header/Logo.svg" alt="Logo" />
+                <img src={logo} alt="Logo" />
                 <p className="Header-text text-5xl">Anime Online.</p>
               </motion.span>
             </Link>
