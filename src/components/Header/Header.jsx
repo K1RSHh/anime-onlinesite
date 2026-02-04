@@ -2,6 +2,8 @@
 import { motion } from "framer-motion";
 import { NavLink, Link } from "react-router";
 import { Search } from "lucide-react";
+import { useAuthStore } from "../../data/authStore";
+import { User, LogOut } from "lucide-react";
 import logo from "../../../public/Header/Logo.svg";
 import "./Header.css";
 
@@ -28,6 +30,8 @@ const CustomLink = ({ to, children, ...props }) => {
 };
 
 function Header() {
+  const { user, logOut } = useAuthStore();
+
   return (
     <header className="max-w-4/4 mt-4 md:mt-10 md:mr-5 px-4">
       <div>
@@ -66,23 +70,62 @@ function Header() {
                   border-transparent  focus:border-2 focus:border-white  placeholder-white outline-none"
                 />
               </div>
-              <div className="flex gap-6 items-center">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-32 h-11 bg-fuchsia-600 rounded-md cursor-pointer"
-                >
-                  Sign up
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.1, backgroundColor: "#bd00ff" }}
-                  whileTap={{ scale: 0.9, backgroundColor: "#C026D3" }}
-                  initial={{ backgroundColor: "transparent" }}
-                  className="w-32 h-11 bg-transparent border-2 border-fuchsia-600 rounded-md cursor-pointer"
-                >
-                  Sign in
-                </motion.button>
-              </div>
+              {user ? (
+                // ВАРІАНТ 1: Юзер залогінений
+                <div className="hidden md:flex items-center gap-4">
+                  <span className="text-white text-sm font-medium">
+                    {user.displayName || user.email.split("@")[0]}
+                  </span>
+
+                  {user.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt="Avatar"
+                      className="w-10 h-10 rounded-full border-2 border-stone-800 object-cover"
+                    />
+                  ) : (
+                    // Якщо аватарки немає — показуємо букву
+                    <div className="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold text-xl border-2 border-stone-800">
+                      {user.displayName
+                        ? user.displayName[0].toUpperCase()
+                        : user.email[0].toUpperCase()}
+                    </div>
+                  )}
+
+                  {/* Кнопка виходу */}
+                  <button
+                    onClick={logOut}
+                    className="p-2 text-stone-400 hover:text-red-500 transition-colors cursor-pointer"
+                    title="Log Out"
+                  >
+                    <LogOut size={20} />
+                  </button>
+                </div>
+              ) : (
+                // ВАРІАНТ 2: Юзер ГІСТЬ (показуємо старі кнопки)
+                <div className="flex gap-6 items-center">
+                  <Link to="/signup">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-32 h-11 bg-fuchsia-600 rounded-md cursor-pointer"
+                    >
+                      Sign up
+                    </motion.button>
+                  </Link>
+
+                  <Link to="/signin">
+                    <motion.button
+                      whileHover={{ scale: 1.1, backgroundColor: "#bd00ff" }}
+                      whileTap={{ scale: 0.9, backgroundColor: "#C026D3" }}
+                      initial={{ backgroundColor: "transparent" }}
+                      className="w-32 h-11 bg-transparent border-2 border-fuchsia-600 rounded-md cursor-pointer"
+                    >
+                      Sign in
+                    </motion.button>
+                  </Link>
+                </div>
+              )}{" "}
             </div>
           </div>
         </div>

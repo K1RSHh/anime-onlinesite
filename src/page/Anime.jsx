@@ -60,6 +60,12 @@ function Anime() {
             <p className="text-2xl">Synopsis:</p>
             <ExpandableText text={anime.synopsis} maxLength={300} />
           </div>
+
+          <div>
+            <div>
+              <p className="">▶type</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

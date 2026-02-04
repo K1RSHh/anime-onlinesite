@@ -14,14 +14,13 @@ const ExpandableText = ({ text, maxLength = 300 }) => {
     <div className="relative">
       <motion.div
         initial={false}
-        animate={{ height: isExpanded ? "auto" : 100 }} // 100px - висота згорнутого стану
+        animate={{ height: isExpanded ? "auto" : 100 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="overflow-hidden text-stone-300 leading-relaxed relative"
       >
         <p className="text-lg/5">{text}</p>
       </motion.div>
 
-      {/* 4. Кнопка перемикання */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className="text-sm  font-bold text-fuchsia-500 hover:text-fuchsia-300 flex items-center gap-1 transition-colors outline-none"
