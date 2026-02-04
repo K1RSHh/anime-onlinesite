@@ -1,6 +1,7 @@
 import * as HoverCard from "@radix-ui/react-hover-card";
 // eslint-disable-next-line
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router";
 
 const getRatingColor = (score) => {
   if (score >= 9) return "font-bold text-emerald-400";
@@ -11,31 +12,33 @@ const getRatingColor = (score) => {
 
 const AnimeCard = ({ anime }) => {
   return (
-    <HoverCard.Root openDelay={200} closeDelay={100}>
+    <HoverCard.Root openDelay={70} closeDelay={100}>
       {/* --- MAIN CARD --- */}
       <HoverCard.Trigger asChild>
-        <div className="relative group cursor-pointer">
-          <div className="relative overflow-hidden rounded-md">
-            <div className="absolute top-2 right-2 z-10 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg">
-              # {anime.rank}
+        <Link to={`/anime/${anime.mal_id}/${anime.title}`}>
+          <div className="relative group cursor-pointer">
+            <div className="relative overflow-hidden rounded-md">
+              <div className="absolute top-2 right-2 z-10 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg">
+                # {anime.rank}
+              </div>
+              <img
+                className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                src={anime.images.jpg.image_url}
+                alt={anime.title}
+              />
             </div>
-            <img
-              className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-              src={anime.images.jpg.image_url}
-              alt={anime.title}
-            />
+            <div className="mt-2">
+              <h3 className="mb-1 text-white font-medium truncate">
+                {anime.title}
+              </h3>
+              <span
+                className={`text-sm font-bold ${getRatingColor(anime.score)}`}
+              >
+                ★ {anime.score}
+              </span>
+            </div>
           </div>
-          <div className="mt-2">
-            <h3 className="mb-1 text-white font-medium truncate">
-              {anime.title}
-            </h3>
-            <span
-              className={`text-sm font-bold ${getRatingColor(anime.score)}`}
-            >
-              ★ {anime.score}
-            </span>
-          </div>
-        </div>
+        </Link>
       </HoverCard.Trigger>
 
       {/* --- TP INSIDE BODY --- */}
