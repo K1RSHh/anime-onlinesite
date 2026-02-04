@@ -40,8 +40,8 @@ function Anime() {
             <p className="absolute top-1 right-0 text-yellow-300 font-bold">
               {anime.score}★
             </p>
-            <p className="font-bold text-4xl max-w-lg">{anime.title}</p>
-            <p className="text-neutral-500">{anime.title_japanese}</p>
+            <p className="font-bold text-3xl max-w-4/5">{anime.title}</p>
+            <p className="text-neutral-500 text-xl">{anime.title_japanese}</p>
             <div className="flex gap-3">
               {anime.genres &&
                 anime.genres.slice(0, 3).map((genre) => (
