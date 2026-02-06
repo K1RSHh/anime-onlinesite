@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // Для запису в БД
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Для картинок
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { User, Upload } from "lucide-react"; // Іконки
 
 const SignUp = () => {
@@ -21,7 +21,6 @@ const SignUp = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // Щоб блокувати кнопку під час завантаження
-  const navigate = useNavigate();
 
   // Функція обробки вибору файлу
   const handleFileChange = (e) => {
