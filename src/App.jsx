@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "./data/authStore";
 import SignUp from "./page/SignUp";
 import SignIn from "./page/SignIn";
+import Profile from "./page/Profile";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   const { initializeAuth } = useAuthStore();
@@ -32,6 +34,14 @@ function App() {
           <Route path="/anime/:mal_id/:title" element={<Anime />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
       <MobileBottomNav />

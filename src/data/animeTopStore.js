@@ -1,60 +1,55 @@
 import { create } from "zustand";
 import api from "../api/axios";
 
-export const useTopAnimeStore = create(
-  (set) => ({
-    //state
-    topAnime: [],
-    page: 1,
-    isLoading: false,
-    error: null,
-    hasMore: true,
+export const useTopAnimeStore = create((set) => ({
+  //state
+  topAnime: [],
+  page: 1,
+  isLoading: false,
+  error: null,
+  hasMore: true,
 
-    //Action
-    fetchTopAnime: async (nextPage = 1) => {
-      set({ isLoading: true, error: null });
+  //Action
+  fetchTopAnime: async (nextPage = 1) => {
+    set({ isLoading: true, error: null });
 
-      try {
-        const response = await api.get("/top/anime", {
-          params: {
-            page: nextPage,
-            limit: 25,
-          },
-        });
+    try {
+      const response = await api.get("/top/anime", {
+        params: {
+          page: nextPage,
+          limit: 25,
+        },
+      });
 
-        const { data, pagination } = response.data;
+      const { data, pagination } = response.data;
 
-        set((state) => {
-          const newAnimeList = data;
+      set((state) => {
+        const newAnimeList = data;
 
-          if (nextPage === 1) {
-            return {
-              topAnime: newAnimeList,
-              page: 1,
-              hasMore: pagination.has_next_page,
-              isLoading: false,
-            };
-          }
-
-          const existingIds = new Set(state.topAnime.map((a) => a.mal_id));
-          const uniqueNewAnime = newAnimeList.filter(
-            (anime) => !existingIds.has(anime.mal_id),
-          );
-
+        if (nextPage === 1) {
           return {
-            topAnime: [...state.topAnime, ...uniqueNewAnime],
-            page: nextPage,
+            topAnime: newAnimeList,
+            page: 1,
             hasMore: pagination.has_next_page,
             isLoading: false,
           };
-        });
-      } catch (error) {
-        console.error(error.message);
-        set({ isLoading: false });
-      }
-    },
-  }),
-  {
-    name: "cart-storage",
+        }
+
+        const existingIds = new Set(state.topAnime.map((a) => a.mal_id));
+        const uniqueNewAnime = newAnimeList.filter(
+          (anime) => !existingIds.has(anime.mal_id),
+        );
+
+        return {
+          topAnime: [...state.topAnime, ...uniqueNewAnime],
+          page: nextPage,
+          hasMore: pagination.has_next_page,
+          isLoading: false,
+        };
+      });
+    } catch (error) {
+      console.error(error.message);
+      set({ isLoading: false });
+    }
   },
-);
+}));
