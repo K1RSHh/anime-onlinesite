@@ -56,10 +56,20 @@ function Header() {
                 <CustomLink to="/" end>
                   Home
                 </CustomLink>
-                <CustomLink to="/news">News</CustomLink>
-                <CustomLink to="/categories">Categories</CustomLink>
+                <button
+                  disabled={true}
+                  className="text-2xl block font-bold cursor-pointer  disabled:text-gray-400/50 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Next time
+                </button>
+                <button
+                  disabled={true}
+                  className="text-2xl block font-bold cursor-pointer  disabled:text-gray-400/50 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Next time
+                </button>
               </div>
-              <div className="relative w-full md:max-w-md mr-6">
+              <div className="relative md:max-w-md mr-6">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <Search className="w-5 h-5 text-white" />
                 </div>
