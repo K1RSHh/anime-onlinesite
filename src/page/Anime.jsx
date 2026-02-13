@@ -4,10 +4,13 @@ import { fetchAnime } from "../data/anime";
 import ExpandableText from "../components/ExpandableText/ExpandableText";
 // eslint-disable-next-line
 import { motion } from "framer-motion";
+import { useAuthStore } from "../data/authStore";
+import StatusSelector from "../components/StatusSelector/StatusSelector";
 
 function Anime() {
   const { mal_id } = useParams();
   const [anime, setAnime] = useState(null);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const getData = async () => {
@@ -34,6 +37,17 @@ function Anime() {
               src={anime.images.jpg.large_image_url}
               alt={anime.title}
             />
+            <div className="mt-6">
+              {user ? (
+                // 👇 Вставляємо нашу розумну кнопку
+                <StatusSelector anime={anime} userId={user.uid} />
+              ) : (
+                // 👇 Якщо не залогінений — просимо увійти
+                <button className="px-6 py-3 bg-stone-800 text-stone-500 rounded-lg cursor-not-allowed">
+                  Log in to add to list
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="text-3xl relative md:max-w-xl md:flex md:flex-col gap-2 md:ml-10">
@@ -49,7 +63,7 @@ function Anime() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     key={genre.mal_id}
-                    className="px-2 py-1 cursor-pointer bg-stone-800 text-white text-lg rounded-md border border-stone-700
+                    className="px-2 py-1 cursor-pointer bg-stone-700/70 text-white text-lg rounded-md border border-stone-700
                     hover:bg-fuchsia-600/80
                     "
                   >
