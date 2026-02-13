@@ -81,7 +81,7 @@ const AnimeList = ({ userId }) => {
             <Link
               key={anime.id}
               to={`/anime/${anime.animeId}/${anime.title}`} // Посилання на сторінку деталей
-              className="group bg-stone-950 rounded-xl overflow-hidden border border-stone-800 hover:border-fuchsia-500/50 transition-all"
+              className="group bg-stone-950/55 rounded-xl overflow-hidden border border-stone-800 hover:border-fuchsia-500/50 transition-all"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
