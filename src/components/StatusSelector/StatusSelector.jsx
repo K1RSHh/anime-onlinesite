@@ -166,7 +166,7 @@ const StatusSelector = ({ anime, userId }) => {
           className="fixed inset-0 z-40 bg-transparent"
           onClick={() => setIsOpen(false)}
         />
-      )}
+      )} 
     </div>
   );
 };

@@ -2,6 +2,8 @@ import * as HoverCard from "@radix-ui/react-hover-card";
 // eslint-disable-next-line
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
+import AnimeList from "../AnimeList/AnimeList";
+import { Check, Eye, Clock, Archive } from "lucide-react";
 
 const getRatingColor = (score) => {
   if (score >= 9) return "font-bold text-emerald-400";
@@ -10,7 +12,40 @@ const getRatingColor = (score) => {
   return "text-red-400 border-red-400";
 };
 
-const AnimeCard = ({ anime }) => {
+const AnimeCard = ({ anime, userStatus }) => {
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "watching":
+        return {
+          color: "bg-blue-600",
+          icon: <Eye size={12} />,
+          text: "Watching",
+        };
+      case "completed":
+        return {
+          color: "bg-green-600",
+          icon: <Check size={12} />,
+          text: "Completed",
+        };
+      case "planned":
+        return {
+          color: "bg-stone-500",
+          icon: <Clock size={12} />,
+          text: "Planned",
+        };
+      case "dropped":
+        return {
+          color: "bg-red-600",
+          icon: <Archive size={12} />,
+          text: "Dropped",
+        };
+      default:
+        return null;
+    }
+  };
+
+  const badge = userStatus ? getStatusBadge(userStatus) : null;
+
   return (
     <HoverCard.Root openDelay={70} closeDelay={100}>
       {/* --- MAIN CARD --- */}
@@ -21,6 +56,14 @@ const AnimeCard = ({ anime }) => {
               <div className="absolute top-2 right-2 z-10 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg">
                 # {anime.rank}
               </div>
+              {badge && (
+                <div
+                  className={`absolute top-2 left-2 ${badge.color} text-white px-2 py-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-md`}
+                >
+                  {badge.icon}
+                  {badge.text}
+                </div>
+              )}
               <img
                 className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
                 src={anime.images.jpg.image_url}

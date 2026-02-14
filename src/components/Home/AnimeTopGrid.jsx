@@ -4,8 +4,12 @@ import { useTopAnimeStore } from "../../data/animeTopStore";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import AnimeCard from "../AnimeCard/AnimeCard";
+import { useAnimeStatuses } from "../../hooks/useAnimeStatuses";
+import FilterBar from "../FilterBar/FilterBar";
 
 function AnimeTopGrid() {
+  const userStatuses = useAnimeStatuses();
+
   // add data and function
   const { topAnime, isLoading, fetchTopAnime, page, hasMore } =
     useTopAnimeStore();
@@ -18,9 +22,14 @@ function AnimeTopGrid() {
 
   // loading
   useEffect(() => {
-    if (inView && !isLoading && hasMore) {
-      fetchTopAnime(page + 1);
-    }
+    const timer = setTimeout(() => {
+      if (inView && !isLoading && hasMore) {
+        fetchTopAnime(page + 1);
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [inView, isLoading, hasMore, page, fetchTopAnime]);
 
   useEffect(() => {
@@ -39,12 +48,14 @@ function AnimeTopGrid() {
   return (
     <>
       <div className="pb-20">
-        <p className="text-4xl text-center md:text-left  mb-4 text-white">
-          Anime top
-        </p>
+        <FilterBar />
         <div className="grid grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
           {topAnime.map((anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} />
+            <AnimeCard
+              key={anime.mal_id}
+              anime={anime}
+              userStatus={userStatuses[anime.mal_id]}
+            />
           ))}
         </div>
         <div

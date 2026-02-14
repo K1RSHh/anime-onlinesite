@@ -14,7 +14,7 @@ export const useTopAnimeStore = create((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const response = await api.get("/top/anime", {
+      const response = await api.get("/anime", {
         params: {
           page: nextPage,
           limit: 25,
