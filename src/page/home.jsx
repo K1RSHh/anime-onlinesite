@@ -1,4 +1,4 @@
-import AnimeTopGrid from "../components/Home/AnimeTopGrid";
+import AnimeTopGrid from "../components/Home/AnimeGrid";
 
 function Home() {
   return (

@@ -10,16 +10,23 @@ export const useTopAnimeStore = create((set) => ({
   hasMore: true,
 
   //Action
-  fetchTopAnime: async (nextPage = 1) => {
+  fetchTopAnime: async (nextPage = 1, filters = {}) => {
     set({ isLoading: true, error: null });
 
     try {
-      const response = await api.get("/anime", {
-        params: {
-          page: nextPage,
-          limit: 25,
-        },
-      });
+      const params = {
+        page: nextPage,
+        limit: 25,
+        orderBy: "score",
+        sort: "desc",
+        sfw: true,
+      };
+
+      if (filters.genreId) {
+        params.genres = filters.genreId;
+      }
+
+      const response = await api.get("/anime", { params });
 
       const { data, pagination } = response.data;
 

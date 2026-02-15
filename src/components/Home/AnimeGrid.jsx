@@ -6,9 +6,11 @@ import { useInView } from "react-intersection-observer";
 import AnimeCard from "../AnimeCard/AnimeCard";
 import { useAnimeStatuses } from "../../hooks/useAnimeStatuses";
 import FilterBar from "../FilterBar/FilterBar";
+import { useState } from "react";
 
 function AnimeTopGrid() {
   const userStatuses = useAnimeStatuses();
+  const [selectedGenre, setSelectedGenre] = useState(null);
 
   // add data and function
   const { topAnime, isLoading, fetchTopAnime, page, hasMore } =
@@ -21,20 +23,27 @@ function AnimeTopGrid() {
   });
 
   // loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inView && !isLoading && hasMore) {
-        fetchTopAnime(page + 1);
-      }
-    }, 500);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [inView, isLoading, hasMore, page, fetchTopAnime]);
 
   useEffect(() => {
-    if (topAnime.length === 0) fetchTopAnime(1);
-  }, []);
+    // Якщо це перший запуск (Mount), то жанр null, все ок.
+
+    const timer = setTimeout(() => {
+      // Викликаємо функцію з: сторінка 1, фільтр: поточний жанр
+      fetchTopAnime(1, { genreId: selectedGenre });
+    }, 500); // Чекаємо пів секунди перед запитом
+
+    return () => clearTimeout(timer);
+  }, [selectedGenre]); // 👈 Запускаємо тільки коли змінився жанр
+
+  // 2. Ефект для СКРОЛУ (Load More)
+  useEffect(() => {
+    // Перевіряємо, чи ми внизу сторінки
+    if (inView && !isLoading && hasMore) {
+      // 👇 ВАЖЛИВО: Ми просимо наступну сторінку,
+      // АЛЕ ми мусимо нагадати магазину, який жанр ми зараз дивимось!
+      fetchTopAnime(page + 1, { genreId: selectedGenre });
+    }
+  }, [inView, isLoading, hasMore, page, selectedGenre]);
 
   // if there is no data yet we show
   if (isLoading && topAnime.length === 0) {
@@ -48,8 +57,11 @@ function AnimeTopGrid() {
   return (
     <>
       <div className="pb-20">
-        <FilterBar />
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
+        <FilterBar
+          selectedGenre={selectedGenre}
+          onSelect={(id) => setSelectedGenre(id)}
+        />
+        <div className="grid mt-5 grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
           {topAnime.map((anime) => (
             <AnimeCard
               key={anime.mal_id}
