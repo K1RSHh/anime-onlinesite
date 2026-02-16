@@ -44,7 +44,7 @@ function FilterBar({ selectedGenre, onSelect }) {
           </button>
           <button
             onClick={() => handleSelect(null)}
-            className="text-left px-2 py-2 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
+            className="text-left px-2 py-2.5 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
           >
             Clear genre
           </button>
