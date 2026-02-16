@@ -29,18 +29,20 @@ function FilterBar({ selectedGenre, onSelect }) {
   return (
     <div>
       <div className="relative">
-        <button
-          onClick={() => setGenresOpen(!genresOpen)}
-          className="w-40 py-2 text-center text-xl rounded-md items-center bg-stone-800 hover:bg-stone-700 cursor-pointer"
-        >
-          <span>{activeLabel}</span>
-        </button>
-        <button
-          onClick={() => handleSelect(null)}
-          className="w-40 text-left px-4 py-3 text-sm text-stone-500 hover:bg-stone-800 hover:text-stone-300"
-        >
-          All Genres
-        </button>
+        <div className="items-center flex gap-2">
+          <button
+            onClick={() => setGenresOpen(!genresOpen)}
+            className="w-40 py-2 text-center text-xl rounded-md items-center bg-stone-800 hover:bg-stone-700 cursor-pointer"
+          >
+            <span>{activeLabel}</span>
+          </button>
+          <button
+            onClick={() => handleSelect(null)}
+            className="w-40 text-left px-4 py-2 text-xl rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300"
+          >
+            All Genres
+          </button>
+        </div>
         {genresOpen && (
           <div className="absolute top-full mt-1 left-0 w-full md:w-40 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl z-50 overflow-hidden">
             {genres.map((item) => (
