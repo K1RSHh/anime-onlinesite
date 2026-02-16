@@ -28,7 +28,7 @@ function AnimeTopGrid() {
     const timer = setTimeout(() => {
       //Call the function from: page 1, filter: current genre
       fetchTopAnime(1, { genreId: selectedGenre });
-    }, 200);
+    }, 500);
     return () => clearTimeout(timer);
   }, [selectedGenre]); //Triggers only when selectedGenre updates
 
