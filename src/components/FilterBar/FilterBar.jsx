@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+// eslint-disable-next-line
+import { AnimatePresence, motion } from "framer-motion";
 
 function FilterBar({ selectedGenre, onSelect }) {
   const [genresOpen, setGenresOpen] = useState(false);
@@ -36,38 +38,54 @@ function FilterBar({ selectedGenre, onSelect }) {
     <div>
       <div className="relative">
         <div className="items-center flex gap-2">
-          <button
-            onClick={() => setGenresOpen(!genresOpen)}
+          <motion.button
             className="w-40 py-2 text-center text-xl rounded-md items-center bg-stone-800 hover:bg-stone-700 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setGenresOpen(!genresOpen)}
           >
-            <span>{activeLabel}</span>
-          </button>
-          <button
-            onClick={() => handleSelect(null)}
-            className="text-left px-2 py-2.5 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
-          >
-            Clear genre
-          </button>
+            {activeLabel}
+          </motion.button>
+          {activeLabel != "Genres" && (
+            <motion.button
+              className="text-left px-2 py-2.5 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => handleSelect(null)}
+            >
+              Clear genre
+            </motion.button>
+          )}
         </div>
-        {genresOpen && (
-          <div className="absolute grid grid-cols-4 top-full mt-1 left-0 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl z-50 overflow-hidden">
-            {genres.map((item) => (
-              <button
-                key={item.mal_id}
-                onClick={() => handleSelect(item.mal_id)}
-                className={`w-full flex items-center text-center justify-center  gap-3 px-4 py-3 text-lg hover:bg-stone-800 transition-colors cursor-pointer 
+        <AnimatePresence initial={false}>
+          {genresOpen ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              style={{ originX: 0, originY: 0 }}
+              className="absolute top-full mt-1 left-0 z-50 w-full md:w-auto"
+              key="box"
+            >
+              <div className="grid grid-cols-4 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl overflow-hidden">
+                {genres.map((item) => (
+                  <button
+                    key={item.mal_id}
+                    onClick={() => handleSelect(item.mal_id)}
+                    className={`w-full flex items-center text-center justify-center  gap-3 px-4 py-3 text-lg hover:bg-stone-800 transition-colors cursor-pointer 
                 ${
                   item.mal_id === selectedGenre
                     ? "bg-fuchsia-600/20 text-fuchsia-400 font-bold"
                     : "text-stone-300 hover:bg-stone-800 hover:text-white"
                 }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        )}
-
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
         {genresOpen && (
           <div
             className="fixed inset-0 z-40 bg-transparent"
