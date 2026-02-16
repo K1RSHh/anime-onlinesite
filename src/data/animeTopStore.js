@@ -13,11 +13,13 @@ export const useTopAnimeStore = create((set) => ({
   fetchTopAnime: async (nextPage = 1, filters = {}) => {
     set({ isLoading: true, error: null });
 
+    //Cleaning up old data
     if (nextPage === 1) {
       set({ topAnime: [], hasMore: true });
     }
 
     try {
+      //Preparing launch parameters
       const params = {
         page: nextPage,
         limit: 25,
@@ -26,31 +28,36 @@ export const useTopAnimeStore = create((set) => ({
         sfw: true,
       };
 
-      /// filters
+      //Filters
+      //If the user has selected a genre
       if (filters.genreId) params.genres = filters.genreId;
+      //If the user has selected a year
       if (filters.year) params.start_date = `${filters.year}-01-01`;
 
-      if (filters.genreId) {
-        params.genres = filters.genreId;
-      }
-
+      //Request to server
       const response = await api.get("/anime", { params });
-
       const { data, pagination } = response.data;
 
+      //Updating the state
       set((state) => {
         let combinedList = data;
 
+        //If we take new data from the first page
         if (nextPage === 1) {
           combinedList = data;
         } else {
+          //If it is a new page, we take the previous and new data
           combinedList = [...state.topAnime, ...data];
         }
 
+        //FILTERING DUPLICATES (The most difficult part)
+        // Map automatically removes duplicates by ID.
+        // This protects against API bugs or rapid clicking.
         const uniqueList = [
           ...new Map(combinedList.map((item) => [item.mal_id, item])).values(),
         ];
 
+        //We store the list in memory
         return {
           topAnime: uniqueList,
           page: nextPage,

@@ -4,25 +4,31 @@ function FilterBar({ selectedGenre, onSelect }) {
   const [genresOpen, setGenresOpen] = useState(false);
   const [genres, setGenres] = useState([]);
 
+  //Fetch genres list
   useEffect(() => {
     const getAnimeGenres = async () => {
       try {
+        //Request data
         const response = await fetch("https://api.jikan.moe/v4/genres/anime");
         const result = await response.json();
+
+        //Transfer to stated
         setGenres(result.data);
         console.log(result);
       } catch {
-        console("Mega ERROR");
+        console.log("Fetch Error anime genres list");
       }
     };
     getAnimeGenres();
   }, []);
 
+  //We transfer props on top
   const handleSelect = (genreId) => {
     onSelect(genreId);
     setGenresOpen(false);
   };
 
+  //Change the label to the active genre
   const activeLabel =
     genres.find((g) => g.mal_id === selectedGenre)?.name || "Genres";
 
