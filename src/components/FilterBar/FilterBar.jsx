@@ -44,7 +44,7 @@ function FilterBar({ selectedGenre, onSelect }) {
           </button>
         </div>
         {genresOpen && (
-          <div className="absolute top-full mt-1 left-0 w-full md:w-40 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl z-50 overflow-hidden">
+          <div className="absolute grid grid-cols-4 top-full mt-1 left-0 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl z-50 overflow-hidden">
             {genres.map((item) => (
               <button
                 key={item.mal_id}

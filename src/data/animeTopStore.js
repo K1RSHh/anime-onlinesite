@@ -13,6 +13,10 @@ export const useTopAnimeStore = create((set) => ({
   fetchTopAnime: async (nextPage = 1, filters = {}) => {
     set({ isLoading: true, error: null });
 
+    if (nextPage === 1) {
+      set({ topAnime: [], hasMore: true });
+    }
+
     try {
       const params = {
         page: nextPage,
@@ -21,6 +25,10 @@ export const useTopAnimeStore = create((set) => ({
         sort: "desc",
         sfw: true,
       };
+
+      /// filters
+      if (filters.genreId) params.genres = filters.genreId;
+      if (filters.year) params.start_date = `${filters.year}-01-01`;
 
       if (filters.genreId) {
         params.genres = filters.genreId;
@@ -31,24 +39,20 @@ export const useTopAnimeStore = create((set) => ({
       const { data, pagination } = response.data;
 
       set((state) => {
-        const newAnimeList = data;
+        let combinedList = data;
 
         if (nextPage === 1) {
-          return {
-            topAnime: newAnimeList,
-            page: 1,
-            hasMore: pagination.has_next_page,
-            isLoading: false,
-          };
+          combinedList = data;
+        } else {
+          combinedList = [...state.topAnime, ...data];
         }
 
-        const existingIds = new Set(state.topAnime.map((a) => a.mal_id));
-        const uniqueNewAnime = newAnimeList.filter(
-          (anime) => !existingIds.has(anime.mal_id),
-        );
+        const uniqueList = [
+          ...new Map(combinedList.map((item) => [item.mal_id, item])).values(),
+        ];
 
         return {
-          topAnime: [...state.topAnime, ...uniqueNewAnime],
+          topAnime: uniqueList,
           page: nextPage,
           hasMore: pagination.has_next_page,
           isLoading: false,
@@ -56,7 +60,7 @@ export const useTopAnimeStore = create((set) => ({
       });
     } catch (error) {
       console.error(error.message);
-      set({ isLoading: false });
+      set({ isLoading: false, error: error.message });
     }
   },
 }));

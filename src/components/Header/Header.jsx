@@ -109,7 +109,7 @@ function Header() {
                   {/* Кнопка виходу */}
                   <button
                     onClick={logOut}
-                    className="p-2 text-stone-400  hover:text-red-500 transition-colors cursor-pointer"
+                    className="p-2 text-stone-400 hover:text-red-500 transition-colors cursor-pointer"
                     title="Log Out"
                   >
                     <LogOut size={20} />

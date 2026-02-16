@@ -19,7 +19,7 @@ function AnimeTopGrid() {
   // auto load page
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "200px",
+    rootMargin: "100px",
   });
 
   // loading
@@ -30,7 +30,7 @@ function AnimeTopGrid() {
     const timer = setTimeout(() => {
       // Викликаємо функцію з: сторінка 1, фільтр: поточний жанр
       fetchTopAnime(1, { genreId: selectedGenre });
-    }, 500); // Чекаємо пів секунди перед запитом
+    }, 200); // Чекаємо пів секунди перед запитом
 
     return () => clearTimeout(timer);
   }, [selectedGenre]); // 👈 Запускаємо тільки коли змінився жанр
@@ -38,12 +38,12 @@ function AnimeTopGrid() {
   // 2. Ефект для СКРОЛУ (Load More)
   useEffect(() => {
     // Перевіряємо, чи ми внизу сторінки
-    if (inView && !isLoading && hasMore) {
+    if (inView && !isLoading && hasMore && topAnime.length > 0) {
       // 👇 ВАЖЛИВО: Ми просимо наступну сторінку,
       // АЛЕ ми мусимо нагадати магазину, який жанр ми зараз дивимось!
       fetchTopAnime(page + 1, { genreId: selectedGenre });
     }
-  }, [inView, isLoading, hasMore, page, selectedGenre]);
+  }, [inView, isLoading, hasMore, topAnime.length, page, selectedGenre]);
 
   // if there is no data yet we show
   if (isLoading && topAnime.length === 0) {
