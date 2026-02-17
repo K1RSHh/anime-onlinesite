@@ -6,11 +6,20 @@ import ExpandableText from "../components/ExpandableText/ExpandableText";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../data/authStore";
 import StatusSelector from "../components/StatusSelector/StatusSelector";
+import { useNavigate } from "react-router";
 
 function Anime() {
   const { mal_id } = useParams();
   const [anime, setAnime] = useState(null);
   const { user } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleGenreClick = (e, genreId) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    navigate(`/?genre=${genreId}`);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -63,6 +72,7 @@ function Anime() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     key={genre.mal_id}
+                    onClick={(e) => handleGenreClick(e, genre.mal_id)}
                     className="px-2 py-1 cursor-pointer bg-stone-700/70 text-white text-lg rounded-md border border-stone-700
                     hover:bg-fuchsia-600/80
                     "
@@ -77,7 +87,7 @@ function Anime() {
 
           <div>
             <div>
-              <p className="">▶type</p>
+              <p>▶type</p>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ function FilterBar({ selectedGenre, onSelect }) {
 
   //Change the label to the active genre
   const activeLabel =
-    genres.find((g) => g.mal_id === selectedGenre)?.name || "Genres";
+    genres?.find((g) => g.mal_id == selectedGenre)?.name || "Genres";
 
   return (
     <div>
