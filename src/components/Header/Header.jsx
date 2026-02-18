@@ -1,9 +1,10 @@
 // eslint-disable-next-line
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { NavLink, Link } from "react-router";
 import { Search } from "lucide-react";
 import { useAuthStore } from "../../data/authStore";
 import { User, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
 import logo from "../../../public/Header/Logo.svg";
 import "./Header.css";
 
@@ -31,6 +32,48 @@ const CustomLink = ({ to, children, ...props }) => {
 
 function Header() {
   const { user, logOut } = useAuthStore();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
+  // LIVE SEARCH LOGIC
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    // 2.Timer (Debounce)
+    const timer = setTimeout(async () => {
+      setIsLoading(true);
+      setShowResults(true); // Display the window (even if there is only a spinner there yet)
+
+      try {
+        // Query: search by query, limit 5 items, sort by popularity
+        const response = await fetch(
+          `https://api.jikan.moe/v4/anime?q=${query}&limit=5&order_by=popularity&sort=asc&sfw=true`,
+        );
+        const data = await response.json();
+
+        setResults(data.data || []);
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 500);
+
+    // Clearing the timer each time a key is pressed
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  // Close function when clicking on the result
+  const handleLinkClick = () => {
+    setShowResults(false);
+    setQuery(""); // clear field
+  };
 
   return (
     <header className="max-w-4/4 mt-4 md:mt-10 md:mr-5 px-4">
@@ -52,7 +95,7 @@ function Header() {
           </div>
           <div className="hidden md:flex">
             <div className="flex justify-between">
-              <div className="flex justify-between gap-14 mr-8 items-center">
+              <div className="flex relative justify-between gap-14 mr-8 items-center">
                 <CustomLink to="/" end>
                   Home
                 </CustomLink>
@@ -69,16 +112,92 @@ function Header() {
                   Next time
                 </button>
               </div>
-              <div className="relative md:max-w-md mr-6">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Search className="w-5 h-5 text-white" />
+              <div className="relative mx-auto mr-4">
+                {/* INPUT */}
+                <div className="relative flex items-center">
+                  <Search className="absolute left-3 text-stone-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Search anime..."
+                    className="w-full bg-stone-800 text-white pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all placeholder-stone-500"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onFocus={() => query && setShowResults(true)}
+                  />
+
+                  {/* clare button */}
+                  {query && (
+                    <button
+                      onClick={() => {
+                        setQuery("");
+                        setResults([]);
+                      }}
+                      className="absolute right-3 text-stone-500 hover:text-white"
+                    >
+                      ✕
+                    </button>
+                  )}
                 </div>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="block w-full p-3 pl-10 text-sm text-white bg-stone-800 rounded-lg border-2
-                  border-transparent  focus:border-2 focus:border-white  placeholder-white outline-none"
-                />
+
+                <AnimatePresence>
+                  {showResults && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40 bg-transparent"
+                        onClick={() => setShowResults(false)}
+                      />
+
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                      >
+                        {isLoading ? (
+                          <div className="p-4 text-center text-stone-400">
+                            Searching...
+                          </div>
+                        ) : results.length > 0 ? (
+                          <ul>
+                            {results.map((anime) => (
+                              <li
+                                key={anime.mal_id}
+                                className="border-b border-stone-800 last:border-none"
+                              >
+                                <Link
+                                  to={`/anime/${anime.mal_id}/${anime.title}`}
+                                  onClick={handleLinkClick}
+                                  className="flex items-center gap-3 p-3 hover:bg-stone-800 transition-colors cursor-pointer group"
+                                >
+                                  {/* image */}
+                                  <img
+                                    src={anime.images.jpg.small_image_url}
+                                    alt={anime.title}
+                                    className="w-10 h-14 object-cover rounded-md group-hover:scale-105 transition-transform"
+                                  />
+
+                                  {/* text */}
+                                  <div className="flex flex-col">
+                                    <span className="text-sm text-left font-semibold text-white group-hover:text-fuchsia-400 transition-colors line-clamp-1">
+                                      {anime.title}
+                                    </span>
+                                    <span className="text-xs text-left text-stone-500">
+                                      {anime.year || "Unknown"} • {anime.type}
+                                    </span>
+                                  </div>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <div className="p-4 text-center text-stone-500 text-sm">
+                            No results found for "{query}"
+                          </div>
+                        )}
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
               {user ? (
                 //user login
