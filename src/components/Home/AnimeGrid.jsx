@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTopAnimeStore } from "../../data/animeTopStore";
 // eslint-disable-next-line
 import { motion } from "framer-motion";
@@ -6,14 +6,12 @@ import { useInView } from "react-intersection-observer";
 import AnimeCard from "../AnimeCard/AnimeCard";
 import { useAnimeStatuses } from "../../hooks/useAnimeStatuses";
 import FilterBar from "../FilterBar/FilterBar";
-// import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function AnimeTopGrid() {
   const userStatuses = useAnimeStatuses();
-  // const [selectedGenre, setSelectedGenre] = useState(null);
-
   const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedYear, setSelectedYear] = useState("");
 
   const selectedGenre = searchParams.get("genre")
     ? Number(searchParams.get("genre"))
@@ -42,11 +40,15 @@ function AnimeTopGrid() {
   useEffect(() => {
     //If this is the first launch, then the genre is null, everything is OK.
     const timer = setTimeout(() => {
+      if (selectedYear && selectedYear.toString().length < 4) {
+        return;
+      }
+
       //Call the function from: page 1, filter: current genre
-      fetchTopAnime(1, { genreId: selectedGenre });
+      fetchTopAnime(1, { genreId: selectedGenre, year: selectedYear });
     }, 500);
     return () => clearTimeout(timer);
-  }, [selectedGenre, fetchTopAnime]); //Triggers only when selectedGenre updates
+  }, [selectedGenre, selectedYear, fetchTopAnime]); //Triggers only when selectedGenre updates
 
   //Scroll effect
   useEffect(() => {
@@ -69,7 +71,12 @@ function AnimeTopGrid() {
   return (
     <>
       <div className="pb-20">
-        <FilterBar selectedGenre={selectedGenre} onSelect={handleGenreSelect} />
+        <FilterBar
+          selectedGenre={selectedGenre}
+          onSelect={handleGenreSelect}
+          onYearSelect={(year) => setSelectedYear(year)}
+          yearValue={selectedYear}
+        />
         <div className="grid mt-5 grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
           {topAnime.map((anime) => (
             <AnimeCard

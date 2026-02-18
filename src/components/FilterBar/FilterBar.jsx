@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 // eslint-disable-next-line
 import { AnimatePresence, motion } from "framer-motion";
 
-function FilterBar({ selectedGenre, onSelect }) {
+function FilterBar({ selectedGenre, onSelect, onYearSelect, yearValue }) {
   const [genresOpen, setGenresOpen] = useState(false);
   const [genres, setGenres] = useState([]);
+
+  const maxYear = new Date().getFullYear();
 
   //Fetch genres list
   useEffect(() => {
@@ -16,9 +18,8 @@ function FilterBar({ selectedGenre, onSelect }) {
 
         //Transfer to stated
         setGenres(result.data);
-        console.log(result);
-      } catch {
-        console.log("Fetch Error anime genres list");
+      } catch (err) {
+        console.log("Fetch Error anime genres list", err);
       }
     };
     getAnimeGenres();
@@ -36,8 +37,8 @@ function FilterBar({ selectedGenre, onSelect }) {
 
   return (
     <div>
-      <div className="relative">
-        <div className="items-center flex gap-2">
+      <div className="relative flex items-center gap-4">
+        <div className="items-center flex gap-4">
           <motion.button
             className="w-40 py-2 text-center text-xl rounded-md items-center bg-stone-800 hover:bg-stone-700 cursor-pointer"
             whileHover={{ scale: 1.05 }}
@@ -51,9 +52,33 @@ function FilterBar({ selectedGenre, onSelect }) {
               className="text-left px-2 py-2.5 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
-              onClick={() => handleSelect(null)}
+              onClick={() => handleSelect("")}
             >
               Clear genre
+            </motion.button>
+          )}
+        </div>
+        <div className="items-center flex gap-4">
+          <motion.input
+            //When a user writes we pass it on to the top
+            onChange={(e) => onYearSelect(e.target.value)}
+            whileFocus={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05 }}
+            className="w-40 py-2 pl-4 text-xl rounded-md bg-stone-800 hover:bg-stone-700 cursor-pointer"
+            placeholder="Year"
+            type="number"
+            min="1917"
+            max={maxYear}
+            value={yearValue}
+          />
+          {yearValue > 0 && (
+            <motion.button
+              className="text-left px-2 py-2.5 text-md underline rounded-md text-stone-500 hover:bg-stone-800 hover:text-stone-300 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => onYearSelect(null)}
+            >
+              Clear year
             </motion.button>
           )}
         </div>
@@ -67,7 +92,7 @@ function FilterBar({ selectedGenre, onSelect }) {
               className="absolute top-full mt-1 left-0 z-50 w-full md:w-auto"
               key="box"
             >
-              <div className="grid grid-cols-4 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl overflow-hidden">
+              <div className="grid grid-cols-5 bg-stone-900 border border-stone-800 rounded-xl shadow-2xl overflow-hidden">
                 {genres.map((item) => (
                   <button
                     key={item.mal_id}

@@ -32,7 +32,12 @@ export const useTopAnimeStore = create((set) => ({
       //If the user has selected a genre
       if (filters.genreId) params.genres = filters.genreId;
       //If the user has selected a year
-      if (filters.year) params.start_date = `${filters.year}-01-01`;
+      if (filters.year) {
+        //Start year
+        params.start_date = `${filters.year}-01-01`;
+        //End years
+        params.end_date = `${filters.year}-12-31`;
+      }
 
       //Request to server
       const response = await api.get("/anime", { params });

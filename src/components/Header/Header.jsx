@@ -81,8 +81,8 @@ function Header() {
                 />
               </div>
               {user ? (
-                // ВАРІАНТ 1: Юзер залогінений
-                <div className="hidden md:flex items-center gap-9">
+                //user login
+                <div className="hidden md:flex items-center gap-3">
                   <Link
                     to="/profile"
                     className="hidden md:flex items-center gap-4"
@@ -98,7 +98,7 @@ function Header() {
                         className="w-10 h-10 rounded-full border-2 border-stone-800 object-cover"
                       />
                     ) : (
-                      // Якщо аватарки немає — показуємо букву
+                      //if there is no avatar, we put the letter
                       <div className="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold text-xl border-2 border-stone-800">
                         {user.displayName
                           ? user.displayName[0].toUpperCase()
@@ -106,7 +106,7 @@ function Header() {
                       </div>
                     )}
                   </Link>
-                  {/* Кнопка виходу */}
+                  {/* exit button */}
                   <button
                     onClick={logOut}
                     className="p-2 text-stone-400 hover:text-red-500 transition-colors cursor-pointer"
