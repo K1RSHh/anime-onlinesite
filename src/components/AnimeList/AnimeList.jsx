@@ -16,7 +16,7 @@ const AnimeList = ({ userId }) => {
     { id: "completed", label: "Completed", icon: <CheckCircle size={16} /> },
     { id: "planned", label: "Plan to Watch", icon: <Clock size={16} /> },
   ];
-
+  
   useEffect(() => {
     if (!userId) return; // 👈 ДОДАЙ ЦЕЙ РЯДОК! Без нього запит ламається.
 

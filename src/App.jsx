@@ -1,9 +1,9 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
 import Header from "./components/Header/Header";
-import Home from "./page/home";
-import News from "./page/News";
 import Anime from "./page/Anime";
+import Manga from "./page/Manga";
+import AnimeInfo from "./page/AnimeInfo";
 import Categories from "./page/Categories";
 import MobileBottomNav from "./components/MobileBottomNav/MobileBottomNav";
 import { useEffect } from "react";
@@ -28,10 +28,10 @@ function App() {
       <Header />
       <div className="mt-4 md:mt-10 w-full">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/news" element={<News />} />
+          <Route path="/" element={<Anime />} />
+          <Route path="/manga" element={<Manga />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/anime/:mal_id/:title" element={<Anime />} />
+          <Route path="/anime/:mal_id/:title" element={<AnimeInfo />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route

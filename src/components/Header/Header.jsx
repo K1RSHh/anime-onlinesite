@@ -97,14 +97,10 @@ function Header() {
             <div className="flex justify-between">
               <div className="flex relative justify-between gap-14 mr-8 items-center">
                 <CustomLink to="/" end>
-                  Home
+                  Anime
                 </CustomLink>
-                <button
-                  disabled={true}
-                  className="text-2xl block font-bold cursor-pointer  disabled:text-gray-400/50 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  Next time
-                </button>
+                <CustomLink to="/manga">Manga</CustomLink>
+
                 <button
                   disabled={true}
                   className="text-2xl block font-bold cursor-pointer  disabled:text-gray-400/50 disabled:cursor-not-allowed disabled:opacity-70"
@@ -235,7 +231,7 @@ function Header() {
                   </button>
                 </div>
               ) : (
-                // ВАРІАНТ 2: Юзер ГІСТЬ (показуємо старі кнопки)
+                // user not login
                 <div className="flex gap-6 items-center">
                   <Link to="/signup">
                     <motion.button

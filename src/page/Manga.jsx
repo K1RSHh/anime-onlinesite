@@ -1,4 +1,4 @@
-function News() {
+function Manga() {
   return (
     <div className="flex mt-40">
       <div className="text-center m-auto items-center">
@@ -8,4 +8,4 @@ function News() {
   );
 }
 
-export default News;
+export default Manga;
