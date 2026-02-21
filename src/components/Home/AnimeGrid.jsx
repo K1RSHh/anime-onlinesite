@@ -11,11 +11,17 @@ import { useSearchParams } from "react-router-dom";
 function AnimeTopGrid() {
   const userStatuses = useAnimeStatuses();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedYear, setSelectedYear] = useState("");
+  const [yearFrom, setYearFrom] = useState("");
+  const [yearTo, setYearTo] = useState("");
+  const [sortBy, setSortBy] = useState("score-desc");
 
   const selectedGenre = searchParams.get("genre")
     ? Number(searchParams.get("genre"))
     : null;
+
+  //add data and function
+  const { topAnime, isLoading, fetchTopAnime, page, hasMore } =
+    useTopAnimeStore();
 
   const handleGenreSelect = (id) => {
     if (id) {
@@ -25,10 +31,6 @@ function AnimeTopGrid() {
       setSearchParams(searchParams);
     }
   };
-
-  //add data and function
-  const { topAnime, isLoading, fetchTopAnime, page, hasMore } =
-    useTopAnimeStore();
 
   //auto load page
   const { ref, inView } = useInView({
@@ -40,15 +42,25 @@ function AnimeTopGrid() {
   useEffect(() => {
     //If this is the first launch, then the genre is null, everything is OK.
     const timer = setTimeout(() => {
-      if (selectedYear && selectedYear.toString().length < 4) {
+      const [orderBy, sort] = sortBy.split("-");
+      if (yearFrom && yearFrom.toString().length < 4) {
+        return;
+      }
+      if (yearTo && yearTo.toString().length < 4) {
         return;
       }
 
       //Call the function from: page 1, filter: current genre
-      fetchTopAnime(1, { genreId: selectedGenre, year: selectedYear });
+      fetchTopAnime(1, {
+        genreId: selectedGenre,
+        yearFrom: yearFrom,
+        yearTo: yearTo,
+        orderBy: orderBy,
+        sort: sort,
+      });
     }, 500);
     return () => clearTimeout(timer);
-  }, [selectedGenre, selectedYear, fetchTopAnime]); //Triggers only when selectedGenre updates
+  }, [selectedGenre, yearFrom, yearTo, sortBy, fetchTopAnime]); //Triggers only when selectedGenre updates
 
   //Scroll effect
   useEffect(() => {
@@ -57,7 +69,17 @@ function AnimeTopGrid() {
       //Request the next page, passing on the current genre
       fetchTopAnime(page + 1, { genreId: selectedGenre });
     }
-  }, [inView, isLoading, hasMore, topAnime.length, page, selectedGenre]);
+  }, [
+    inView,
+    isLoading,
+    hasMore,
+    topAnime.length,
+    page,
+    selectedGenre,
+    yearFrom,
+    yearTo,
+    sortBy,
+  ]);
 
   // if there is no data yet we show
   if (isLoading && topAnime.length === 0) {
@@ -74,8 +96,12 @@ function AnimeTopGrid() {
         <FilterBar
           selectedGenre={selectedGenre}
           onSelect={handleGenreSelect}
-          onYearSelect={(year) => setSelectedYear(year)}
-          yearValue={selectedYear}
+          onYearFromSelect={(year) => setYearFrom(year)}
+          yearFromValue={yearFrom}
+          onYearToSelect={(year) => setYearTo(year)}
+          yearToValue={yearTo}
+          onSortSelect={(sort) => setSortBy(sort)}
+          sortByValue={sortBy}
         />
         <div className="grid mt-5 grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
           {topAnime.map((anime) => (

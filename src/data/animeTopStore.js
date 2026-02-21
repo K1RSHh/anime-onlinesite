@@ -23,21 +23,25 @@ export const useTopAnimeStore = create((set) => ({
       const params = {
         page: nextPage,
         limit: 25,
-        orderBy: "score",
-        sort: "desc",
         sfw: true,
       };
 
       //Filters
       //If the user has selected a genre
       if (filters.genreId) params.genres = filters.genreId;
-      //If the user has selected a year
-      if (filters.year) {
-        //Start year
-        params.start_date = `${filters.year}-01-01`;
-        //End years
-        params.end_date = `${filters.year}-12-31`;
+
+      // Якщо юзер ввів "Рік Від"
+      if (filters.yearFrom) {
+        params.start_date = `${filters.yearFrom}-01-01`;
       }
+
+      // Якщо юзер ввів "Рік До"
+      if (filters.yearTo) {
+        params.end_date = `${filters.yearTo}-12-31`;
+      }
+
+      params.order_by = filters.orderBy || "score";
+      params.sort = filters.sort || "desc";
 
       //Request to server
       const response = await api.get("/anime", { params });
