@@ -66,8 +66,17 @@ function AnimeTopGrid() {
   useEffect(() => {
     //Check whether we are at the bottom of the page
     if (inView && !isLoading && hasMore && topAnime.length > 0) {
-      //Request the next page, passing on the current genre
-      fetchTopAnime(page + 1, { genreId: selectedGenre });
+      // 1. Обов'язково дістаємо поточне сортування
+      const [orderBy, sort] = sortBy.split("-");
+
+      // 2. Передаємо ВСІ поточні фільтри на наступну сторінку
+      fetchTopAnime(page + 1, {
+        genreId: selectedGenre,
+        yearFrom: yearFrom,
+        yearTo: yearTo,
+        orderBy: orderBy,
+        sort: sort,
+      });
     }
   }, [
     inView,

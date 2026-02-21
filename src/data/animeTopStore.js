@@ -19,6 +19,20 @@ export const useTopAnimeStore = create((set) => ({
     }
 
     try {
+      //Filters
+
+      // 1. Аналізуємо, що саме хоче юзер
+      const currentOrderBy = filters.orderBy || "score";
+      const currentSort = filters.sort || "desc";
+      const hasFilters = filters.genreId || filters.yearFrom || filters.yearTo;
+
+      // 2. Визначаємо, чи це "чистий" запит Топ аніме (без фільтрів, сортування за рейтингом)
+      const isPureTop =
+        !hasFilters && currentOrderBy === "score" && currentSort === "desc";
+
+      // 3. Динамічно обираємо ендпоінт
+      const endpoint = isPureTop ? "/top/anime" : "/anime";
+
       //Preparing launch parameters
       const params = {
         page: nextPage,
@@ -26,25 +40,18 @@ export const useTopAnimeStore = create((set) => ({
         sfw: true,
       };
 
-      //Filters
-      //If the user has selected a genre
-      if (filters.genreId) params.genres = filters.genreId;
+      // 4. Додаємо фільтри ТІЛЬКИ якщо ми використовуємо пошуковий ендпоінт
+      if (!isPureTop) {
+        params.order_by = currentOrderBy;
+        params.sort = currentSort;
 
-      // Якщо юзер ввів "Рік Від"
-      if (filters.yearFrom) {
-        params.start_date = `${filters.yearFrom}-01-01`;
+        if (filters.genreId) params.genres = filters.genreId;
+        if (filters.yearFrom) params.start_date = `${filters.yearFrom}-01-01`;
+        if (filters.yearTo) params.end_date = `${filters.yearTo}-12-31`;
       }
 
-      // Якщо юзер ввів "Рік До"
-      if (filters.yearTo) {
-        params.end_date = `${filters.yearTo}-12-31`;
-      }
-
-      params.order_by = filters.orderBy || "score";
-      params.sort = filters.sort || "desc";
-
-      //Request to server
-      const response = await api.get("/anime", { params });
+      // Робимо запит за обраним URL
+      const response = await api.get(endpoint, { params });
       const { data, pagination } = response.data;
 
       //Updating the state
