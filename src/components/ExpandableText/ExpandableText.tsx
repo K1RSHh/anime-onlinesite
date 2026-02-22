@@ -3,7 +3,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-const ExpandableText = ({ text, maxLength = 300 }) => {
+interface ExpandableTextProps {
+  text: string;
+  maxLength: number;
+}
+
+const ExpandableText = ({ text, maxLength = 300 }: ExpandableTextProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!text || text.length <= maxLength) {

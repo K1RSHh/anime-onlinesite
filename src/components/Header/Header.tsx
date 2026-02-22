@@ -1,14 +1,32 @@
 // eslint-disable-next-line
 import { AnimatePresence, motion } from "framer-motion";
-import { NavLink, Link } from "react-router";
+import { NavLink, Link, NavLinkProps } from "react-router";
 import { Search } from "lucide-react";
 import { useAuthStore } from "../../data/authStore";
 import { User, LogOut } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import logo from "../../../public/Header/Logo.svg";
 import "./Header.css";
 
-const CustomLink = ({ to, children, ...props }) => {
+// "extends NavLinkProps" означає: "Візьми всі правила звичайного NavLink і додай мої"
+interface CustomLinkData extends NavLinkProps {
+  to: string;
+  children: ReactNode;
+}
+
+interface AnimeData {
+  mal_id: string;
+  title: string;
+  images: {
+    jpg: {
+      small_image_url: string;
+    };
+  };
+  year: string;
+  type: string;
+}
+
+const CustomLink = ({ to, children, ...props }: CustomLinkData) => {
   return (
     <NavLink to={to} {...props}>
       {({ isActive }) => (
@@ -155,7 +173,7 @@ function Header() {
                           </div>
                         ) : results.length > 0 ? (
                           <ul>
-                            {results.map((anime) => (
+                            {results.map((anime: AnimeData) => (
                               <li
                                 key={anime.mal_id}
                                 className="border-b border-stone-800 last:border-none"

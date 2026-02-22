@@ -4,8 +4,21 @@ import { collection, query, onSnapshot, where } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { Star, Eye, CheckCircle, Clock } from "lucide-react";
 
-const AnimeList = ({ userId }) => {
-  const [animeList, setAnimeList] = useState([]);
+interface AnimeListData {
+  id: string;
+  animeId: number;
+  score: number;
+  title: string;
+  status: string;
+  image: string;
+}
+
+interface AnimeCardProps {
+  userId: AnimeListData;
+}
+
+const AnimeList = ({ userId }: AnimeCardProps) => {
+  const [animeList, setAnimeList] = useState<AnimeListData[]>([]);
   const [filter, setFilter] = useState("all"); // 'all', 'watching', 'completed', 'planned'
   const [loading, setLoading] = useState(true);
 
@@ -16,12 +29,12 @@ const AnimeList = ({ userId }) => {
     { id: "completed", label: "Completed", icon: <CheckCircle size={16} /> },
     { id: "planned", label: "Plan to Watch", icon: <Clock size={16} /> },
   ];
-  
+
   useEffect(() => {
     if (!userId) return; // 👈 ДОДАЙ ЦЕЙ РЯДОК! Без нього запит ламається.
 
     // 1. Посилання на підколекцію
-    const listRef = collection(db, "users", userId, "animeList");
+    const listRef = collection(db, "users", `${userId}`, "animeList");
 
     // 2. Формуємо запит (Query)
     let q = query(listRef);
@@ -35,7 +48,7 @@ const AnimeList = ({ userId }) => {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        ...(doc.data() as Omit<AnimeListData, "id">),
       }));
       setAnimeList(data);
       setLoading(false);
@@ -77,7 +90,7 @@ const AnimeList = ({ userId }) => {
         </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {animeList.map((anime) => (
+          {animeList.map((anime: AnimeListData) => (
             <Link
               key={anime.id}
               to={`/anime/${anime.animeId}/${anime.title}`} // Посилання на сторінку деталей

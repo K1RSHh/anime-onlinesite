@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import AnimeList from "../AnimeList/AnimeList";
 import { Check, Eye, Clock, Archive } from "lucide-react";
 
-interface AnimeCardData {
+export interface AnimeCardData {
   mal_id: number;
   title: string;
   score: number;

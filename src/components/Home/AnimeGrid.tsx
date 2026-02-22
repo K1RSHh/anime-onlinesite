@@ -3,7 +3,7 @@ import { useTopAnimeStore } from "../../data/animeTopStore";
 // eslint-disable-next-line
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import AnimeCard from "../AnimeCard/AnimeCard";
+import AnimeCard, { AnimeCardData } from "../AnimeCard/AnimeCard";
 import { useAnimeStatuses } from "../../hooks/useAnimeStatuses";
 import FilterBar from "../FilterBar/FilterBar";
 import { useSearchParams } from "react-router-dom";
@@ -23,9 +23,9 @@ function AnimeTopGrid() {
   const { topAnime, isLoading, fetchTopAnime, page, hasMore } =
     useTopAnimeStore();
 
-  const handleGenreSelect = (id) => {
+  const handleGenreSelect = (id: number | "") => {
     if (id) {
-      setSearchParams({ genre: id }); // Додасть /?genre=id
+      setSearchParams({ genre: id.toString() }); // Додасть /?genre=id
     } else {
       searchParams.delete("genre"); // Очистить URL
       setSearchParams(searchParams);
@@ -113,7 +113,7 @@ function AnimeTopGrid() {
           sortByValue={sortBy}
         />
         <div className="grid mt-5 grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
-          {topAnime.map((anime) => (
+          {topAnime.map((anime: AnimeCardData) => (
             <AnimeCard
               key={anime.mal_id}
               anime={anime}

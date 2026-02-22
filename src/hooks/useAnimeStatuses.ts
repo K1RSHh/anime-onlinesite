@@ -3,9 +3,9 @@ import { db } from "../firebaseAppObject";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useAuthStore } from "../data/authStore";
 
-export const useAnimeStatuses = () => {
+export const useAnimeStatuses = (): Record<number, string> => {
   const { user } = useAuthStore();
-  const [statuses, setStatuses] = useState({});
+  const [statuses, setStatuses] = useState<Record<number, string>>({});
 
   // 1. Зберігаємо ID в змінну для стабільності
   const userId = user?.uid;
@@ -20,11 +20,11 @@ export const useAnimeStatuses = () => {
     const unsubscribe = onSnapshot(
       listRef,
       (snapshot) => {
-        const statusMap = {};
+        const statusMap: Record<number, string> = {};
 
         snapshot.docs.forEach((doc) => {
           const data = doc.data();
-          statusMap[data.animeId] = data.status;
+          statusMap[data.animeId as number] = data.status as string;
         });
 
         setStatuses(statusMap);

@@ -2,6 +2,24 @@ import { useState, useEffect } from "react";
 // eslint-disable-next-line
 import { AnimatePresence, motion } from "framer-motion";
 
+// 1. Інтерфейс для одного жанру (те, що приходить з Jikan API)
+interface Genre {
+  mal_id: number;
+  name: string;
+}
+
+// 2. Інтерфейс для пропсів компонента
+interface FilterBarProps {
+  selectedGenre: number | null; // Може бути числом або відсутнім
+  onSelect: (genreId: number | "") => void; // Функція, яка приймає число або порожній рядок
+  onYearFromSelect: (year: string) => void; // Функція, яка приймає рядок року
+  yearFromValue: string;
+  onYearToSelect: (year: string) => void;
+  yearToValue: string;
+  onSortSelect: (sort: string) => void;
+  sortByValue: string;
+}
+
 function FilterBar({
   selectedGenre,
   onSelect,
@@ -11,9 +29,9 @@ function FilterBar({
   yearToValue,
   onSortSelect,
   sortByValue,
-}) {
+}: FilterBarProps) {
   const [genresOpen, setGenresOpen] = useState(false);
-  const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
 
   const maxYear = new Date().getFullYear();
 
@@ -35,7 +53,7 @@ function FilterBar({
   }, []);
 
   //We transfer props on top
-  const handleSelect = (genreId) => {
+  const handleSelect = (genreId: number | "") => {
     onSelect(genreId);
     setGenresOpen(false);
   };
