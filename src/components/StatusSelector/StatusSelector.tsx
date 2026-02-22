@@ -3,9 +3,25 @@ import { db } from "../../firebaseAppObject";
 import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { ChevronDown, Check, Eye, Clock, Archive, XCircle } from "lucide-react";
 
-const StatusSelector = ({ anime, userId }) => {
+interface StatusSelector {
+  mal_id: number;
+  title: string;
+  score: number;
+  images: {
+    jpg: {
+      image_url: string;
+    };
+  };
+}
+
+interface StatusSelectorProps {
+  anime: StatusSelector;
+  userId: number;
+}
+
+const StatusSelector = ({ anime, userId }: StatusSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState(null); // 'watching', 'completed', etc.
+  const [currentStatus, setCurrentStatus] = useState<string | null>(null); // 'watching', 'completed', etc.
   const [loading, setLoading] = useState(true);
 
   // Опції для меню
@@ -44,9 +60,9 @@ const StatusSelector = ({ anime, userId }) => {
       const docRef = doc(
         db,
         "users",
-        userId,
+        `${userId}`,
         "animeList",
-        anime.mal_id.toString(),
+        `${anime.mal_id}`,
       );
       const docSnap = await getDoc(docRef);
 
@@ -60,7 +76,7 @@ const StatusSelector = ({ anime, userId }) => {
   }, [userId, anime]);
 
   // 2. Логіка зміни статусу
-  const handleSelect = async (statusValue) => {
+  const handleSelect = async (statusValue: string) => {
     if (!userId) return alert("Please login first!"); // Або редірект на логін
     setLoading(true);
     setIsOpen(false);
@@ -68,9 +84,9 @@ const StatusSelector = ({ anime, userId }) => {
     const docRef = doc(
       db,
       "users",
-      userId,
+      `${userId}`,
       "animeList",
-      anime.mal_id.toString(),
+      `${anime.mal_id}`,
     );
 
     try {
@@ -166,7 +182,7 @@ const StatusSelector = ({ anime, userId }) => {
           className="fixed inset-0 z-40 bg-transparent"
           onClick={() => setIsOpen(false)}
         />
-      )} 
+      )}
     </div>
   );
 };

@@ -1,19 +1,46 @@
 import * as HoverCard from "@radix-ui/react-hover-card";
 // eslint-disable-next-line
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, StepId } from "framer-motion";
 import { Link } from "react-router";
 import AnimeList from "../AnimeList/AnimeList";
 import { Check, Eye, Clock, Archive } from "lucide-react";
 
-const getRatingColor = (score) => {
+interface AnimeCardData {
+  mal_id: number;
+  title: string;
+  score: number;
+  status: string;
+  rank: number;
+  title_japanese: string;
+  episodes: number;
+  year: number;
+  type: string;
+  images: {
+    jpg: {
+      image_url: string;
+    };
+  };
+  genres: {
+    mal_id: number;
+    name: string;
+  }[];
+}
+
+interface AnimeCardProps {
+  anime: AnimeCardData;
+  userStatus?: string;
+}
+
+const getRatingColor = (score: number) => {
+  console.log(score);
   if (score >= 9) return "font-bold text-emerald-400";
   if (score >= 7.5) return "font-bold text-green-400";
   if (score >= 6) return "font-bold text-yellow-400";
   return "text-red-400 border-red-400";
 };
 
-const AnimeCard = ({ anime, userStatus }) => {
-  const getStatusBadge = (status) => {
+const AnimeCard = ({ anime, userStatus }: AnimeCardProps) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "watching":
         return {
