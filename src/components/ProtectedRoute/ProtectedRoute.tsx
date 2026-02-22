@@ -1,7 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../data/authStore";
+import { ReactNode } from "react";
 
-const ProtectedRoute = ({ children }) => {
+interface ProtectedRouteProp {
+  children: ReactNode;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProp) => {
   const { user, loading } = useAuthStore();
 
   // 1. Поки ми ще питаємо у Firebase "чи є юзер?", показуємо спіннер або просто нічого

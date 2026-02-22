@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { auth } from "../firebaseAppObject";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth"; // 👇 Додали signOut
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = async (e) => {
+  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 

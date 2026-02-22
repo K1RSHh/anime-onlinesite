@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { useAuthStore } from "../../data/authStore";
 import { User, LogOut } from "lucide-react";
 import { useState, useEffect, ReactNode } from "react";
-import logo from "../../../public/Header/Logo.svg";
+
 import "./Header.css";
 
 // "extends NavLinkProps" означає: "Візьми всі правила звичайного NavLink і додай мої"
@@ -104,7 +104,7 @@ function Header() {
                 whileTap={{ scale: 0.9 }}
                 className="flex gap-2"
               >
-                <img src={logo} alt="Logo" />
+                <img src="Header/Logo.svg" alt="Logo" />
                 <p className="Header-text text-2xl md:text-5xl">
                   Anime Online.
                 </p>

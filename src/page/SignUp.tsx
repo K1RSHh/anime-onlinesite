@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { auth, db, storage } from "../firebaseAppObject"; // Імпортуємо все необхідне
 import {
   createUserWithEmailAndPassword,
@@ -15,23 +15,23 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState(""); // Новий стан
-  const [file, setFile] = useState(null); // Стан для файлу картинки
-  const [avatarPreview, setAvatarPreview] = useState(null); // Для попереднього перегляду
+  const [file, setFile] = useState<File | null>(null); // Стан для файлу картинки
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null); // Для попереднього перегляду
 
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // Щоб блокувати кнопку під час завантаження
 
   // Функція обробки вибору файлу
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setAvatarPreview(URL.createObjectURL(selectedFile)); // Робимо прев'ю
     }
   };
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -78,7 +78,7 @@ const SignUp = () => {
 
       // 7. Перемикаємо "тумблер", щоб замість форми показати текст про лист
       setIsEmailSent(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       if (err.code === "auth/email-already-in-use") {
         setError("Цей email вже зайнятий.");

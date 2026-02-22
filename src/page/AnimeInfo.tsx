@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { fetchAnime } from "../data/anime";
 import ExpandableText from "../components/ExpandableText/ExpandableText";
 // eslint-disable-next-line
@@ -8,13 +8,38 @@ import { useAuthStore } from "../data/authStore";
 import StatusSelector from "../components/StatusSelector/StatusSelector";
 import { useNavigate } from "react-router";
 
+interface AnimeInfoData {
+  mal_id: number;
+  title: string;
+  title_japanese: string;
+  score: number;
+  synopsis: string;
+  type: string;
+  episodes: number | null;
+  status: string;
+  year: number | null;
+  images: {
+    jpg: {
+      image_url: string; // Потрібно для StatusSelector
+      large_image_url: string;
+    };
+  };
+  genres: {
+    mal_id: number;
+    name: string;
+  }[];
+  trailer?: {
+    embed_url: string | null;
+  };
+}
+
 function AnimeInfo() {
   const { mal_id } = useParams();
-  const [anime, setAnime] = useState(null);
+  const [anime, setAnime] = useState<AnimeInfoData | null>(null);
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleGenreClick = (e, genreId) => {
+  const handleGenreClick = (e: MouseEvent<HTMLDivElement>, genreId: number) => {
     e.stopPropagation();
     e.preventDefault();
     navigate("/", { state: { targetGenre: genreId } });
