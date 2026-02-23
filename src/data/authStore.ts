@@ -1,8 +1,16 @@
 import { create } from "zustand";
+import { User } from "firebase/auth";
 import { auth } from "../firebaseAppObject";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
-export const useAuthStore = create((set) => ({
+interface AuthState {
+  user: User | null; // Юзер або є, або його немає (null)
+  loading: boolean;
+  logOut: () => Promise<void>;
+  // ... додай сюди інші функції, якщо вони там є (наприклад, login)
+}
+
+export const useAuthStore = create<AuthState>()((set) => ({
   user: null, // Тут буде об'єкт користувача
   loading: true, // Поки перевіряємо, чи юзер зайшов
 
