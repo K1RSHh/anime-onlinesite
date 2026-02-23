@@ -1,7 +1,31 @@
 import { create } from "zustand";
 import api from "../api/axios";
 
-export const useTopAnimeStore = create((set) => ({
+//Describe what one anime looks like in our array
+export interface AnimeData {
+  mal_id: number;
+  [key: string]: any;
+}
+
+export interface AnimeFilters {
+  genreId?: number | null;
+  yearFrom?: string;
+  yearTo?: string;
+  orderBy?: string;
+  sort?: string;
+}
+
+interface TopAnimeStore {
+  topAnime: AnimeData[];
+  page: number;
+  isLoading: boolean;
+  error: string | null;
+  hasMore: boolean;
+
+  fetchTopAnime: (nextPage?: number, filters?: AnimeFilters) => Promise<void>;
+}
+
+export const useTopAnimeStore = create<TopAnimeStore>()((set) => ({
   //state
   topAnime: [],
   page: 1,
@@ -20,7 +44,6 @@ export const useTopAnimeStore = create((set) => ({
 
     try {
       //Filters
-
       // 1. Аналізуємо, що саме хоче юзер
       const currentOrderBy = filters.orderBy || "score";
       const currentSort = filters.sort || "desc";
@@ -34,7 +57,7 @@ export const useTopAnimeStore = create((set) => ({
       const endpoint = isPureTop ? "/top/anime" : "/anime";
 
       //Preparing launch parameters
-      const params = {
+      const params: Record<string, any> = {
         page: nextPage,
         limit: 25,
         sfw: true,
@@ -56,7 +79,7 @@ export const useTopAnimeStore = create((set) => ({
 
       //Updating the state
       set((state) => {
-        let combinedList = data;
+        let combinedList: AnimeData[] = data;
 
         //If we take new data from the first page
         if (nextPage === 1) {
@@ -70,7 +93,9 @@ export const useTopAnimeStore = create((set) => ({
         // Map automatically removes duplicates by ID.
         // This protects against API bugs or rapid clicking.
         const uniqueList = [
-          ...new Map(combinedList.map((item) => [item.mal_id, item])).values(),
+          ...new Map<number, AnimeData>(
+            combinedList.map((item: AnimeData) => [item.mal_id, item]),
+          ).values(),
         ];
 
         //We store the list in memory
@@ -81,7 +106,7 @@ export const useTopAnimeStore = create((set) => ({
           isLoading: false,
         };
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
       set({ isLoading: false, error: error.message });
     }
