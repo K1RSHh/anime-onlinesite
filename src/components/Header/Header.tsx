@@ -96,7 +96,7 @@ function Header() {
   return (
     <header className="w-full mt-4 md:mt-10 md:mr-5 px-4">
       <div>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex justify-center md:items-center md:justify-between">
           <Link to="/">
             <motion.span
               whileHover={{ scale: 1.08 }}

@@ -9,7 +9,7 @@ import FilterBar from "../FilterBar/FilterBar";
 import { useSearchParams } from "react-router-dom";
 
 function AnimeTopGrid() {
-  const userStatuses = useAnimeStatuses();
+  const userStatuses: Record<number, string> = useAnimeStatuses();
   const [searchParams, setSearchParams] = useSearchParams();
   const [yearFrom, setYearFrom] = useState("");
   const [yearTo, setYearTo] = useState("");
@@ -37,6 +37,12 @@ function AnimeTopGrid() {
     threshold: 0,
     rootMargin: "200px",
   });
+
+  // Функція для отримання чистих параметрів сортування
+  const getSortParams = (value: string): [string, string] => {
+    const parts = value.split("-");
+    return [parts[0] || "score", parts[1] || "desc"];
+  };
 
   //loading
   useEffect(() => {
@@ -113,10 +119,10 @@ function AnimeTopGrid() {
           sortByValue={sortBy}
         />
         <div className="grid mt-5 grid-cols-[repeat(auto-fill,minmax(171px,2fr))] px-3 md:px-0 gap-4">
-          {topAnime.map((anime: AnimeCardData) => (
+          {topAnime.map((anime) => (
             <AnimeCard
               key={anime.mal_id}
-              anime={anime}
+              anime={anime as AnimeCardData}
               userStatus={userStatuses[anime.mal_id]}
             />
           ))}

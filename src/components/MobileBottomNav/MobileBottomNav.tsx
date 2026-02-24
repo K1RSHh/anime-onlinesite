@@ -15,10 +15,10 @@ const MobileBottomNav = () => {
       <NavItem to="/" icon={<Home size={24} />} label="Home" />
 
       {/* News */}
-      <NavItem to="/news" icon={<Newspaper size={24} />} label="News" />
+      <NavItem to="" icon={<Newspaper size={24} />} label="News" />
 
       {/* Categories */}
-      <NavItem to="/categories" icon={<Search size={24} />} label="Search" />
+      <NavItem to="" icon={<Search size={24} />} label="Search" />
 
       {/* Profile / Login */}
       <NavItem to="/profile" icon={<User size={24} />} label="Profile" />
