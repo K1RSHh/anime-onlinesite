@@ -17,14 +17,16 @@ function App() {
   const { initializeAuth } = useAuthStore();
 
   useEffect(() => {
-    // Запускаємо слухача при старті сайту
     const unsubscribe = initializeAuth();
-    // Прибираємо за собою, коли закриваємо сайт
-    return () => unsubscribe();
-  }, []);
 
+    return () => {
+      if (typeof unsubscribe === "function") {
+        unsubscribe();
+      }
+    };
+  }, [initializeAuth]);
   return (
-    <div className="md:flex flex-col justify-between pb-20 gap-14 md:mr-8 items-center">
+    <div className="md:flex flex-col m-auto justify-between pb-20 gap-14 md:mr-8 items-center">
       <Header />
       <div className="mt-4 md:mt-10 w-full">
         <Routes>

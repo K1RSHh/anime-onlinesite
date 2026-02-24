@@ -16,7 +16,7 @@ interface StatusSelector {
 
 interface StatusSelectorProps {
   anime: StatusSelector;
-  userId: number;
+  userId: string;
 }
 
 const StatusSelector = ({ anime, userId }: StatusSelectorProps) => {

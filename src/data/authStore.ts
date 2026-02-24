@@ -4,10 +4,12 @@ import { auth } from "../firebaseAppObject";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 interface AuthState {
-  user: User | null; // Юзер або є, або його немає (null)
+  user: User | null;
   loading: boolean;
   logOut: () => Promise<void>;
-  // ... додай сюди інші функції, якщо вони там є (наприклад, login)
+
+  // 👇 ДОДАЙ ОСЬ ЦЕЙ РЯДОК:
+  initializeAuth: () => () => void;
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({

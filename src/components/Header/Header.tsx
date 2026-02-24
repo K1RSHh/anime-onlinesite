@@ -94,38 +94,22 @@ function Header() {
   };
 
   return (
-    <header className="max-w-4/4 mt-4 md:mt-10 md:mr-5 px-4">
+    <header className="w-full mt-4 md:mt-10 md:mr-5 px-4">
       <div>
-        <div className="flex text-center items-center">
-          <div className="md:mr-32 flex m-auto">
-            <Link to="/">
-              <motion.span
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.9 }}
-                className="flex gap-2"
-              >
-                <img src="Header/Logo.svg" alt="Logo" />
-                <p className="Header-text text-2xl md:text-5xl">
-                  Anime Online.
-                </p>
-              </motion.span>
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <Link to="/">
+            <motion.span
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex gap-2"
+            >
+              <img src="Header/Logo.svg" alt="Logo" />
+              <p className="Header-text text-2xl md:text-5xl">Anime Online.</p>
+            </motion.span>
+          </Link>
+
           <div className="hidden md:flex">
             <div className="flex justify-between">
-              <div className="flex relative justify-between gap-14 mr-8 items-center">
-                <CustomLink to="/" end>
-                  Anime
-                </CustomLink>
-                <CustomLink to="/manga">Manga</CustomLink>
-
-                <button
-                  disabled={true}
-                  className="text-2xl block font-bold cursor-pointer  disabled:text-gray-400/50 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  Next time
-                </button>
-              </div>
               <div className="relative mx-auto mr-4">
                 {/* INPUT */}
                 <div className="relative flex items-center">
@@ -221,7 +205,7 @@ function Header() {
                     className="hidden md:flex items-center gap-4"
                   >
                     <span className="text-white text-sm font-medium">
-                      {user.displayName || user.email.split("@")[0]}
+                      {user.displayName || user.email?.split("@")[0] || "user"}
                     </span>
 
                     {user.photoURL ? (
@@ -235,7 +219,7 @@ function Header() {
                       <div className="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold text-xl border-2 border-stone-800">
                         {user.displayName
                           ? user.displayName[0].toUpperCase()
-                          : user.email[0].toUpperCase()}
+                          : user.email?.[0].toUpperCase() || "U"}
                       </div>
                     )}
                   </Link>
