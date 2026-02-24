@@ -24,15 +24,15 @@ const SignIn = () => {
       // 👇 ПЕРЕВІРКА ПІДТВЕРДЖЕННЯ ПОШТИ
       if (!user.emailVerified) {
         await signOut(auth); // Одразу викидаємо його
-        setError("Будь ласка, підтвердіть вашу пошту! 📩");
+        setError("Please confirm your email address! 📩");
         return;
       }
 
-      console.log("Успішний вхід:", user.displayName);
+      console.log("Successful login:", user.displayName);
       navigate("/"); // Пускаємо тільки якщо підтвердив
     } catch (err) {
       console.error(err);
-      setError("Неправильний email або пароль.");
+      setError("Incorrect email or password.");
     }
   };
 

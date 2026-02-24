@@ -81,7 +81,7 @@ const SignUp = () => {
     } catch (err: any) {
       console.error(err);
       if (err.code === "auth/email-already-in-use") {
-        setError("Цей email вже зайнятий.");
+        setError("This email address is already taken.");
       } else {
         setError(err.message);
       }
