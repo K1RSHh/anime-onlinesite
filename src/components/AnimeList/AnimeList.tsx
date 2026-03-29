@@ -14,7 +14,7 @@ interface AnimeListData {
 }
 
 interface AnimeCardProps {
-  userId: AnimeListData;
+  userId: string;
 }
 
 const AnimeList = ({ userId }: AnimeCardProps) => {

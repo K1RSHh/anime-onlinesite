@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Anime from "./page/Anime";
 import Manga from "./page/Manga";

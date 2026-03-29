@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTopAnimeStore } from "../../data/animeTopStore";
 // eslint-disable-next-line
-import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import AnimeCard, { AnimeCardData } from "../AnimeCard/AnimeCard";
 import { useAnimeStatuses } from "../../hooks/useAnimeStatuses";

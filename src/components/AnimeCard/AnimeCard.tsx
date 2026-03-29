@@ -1,7 +1,7 @@
 import * as HoverCard from "@radix-ui/react-hover-card";
 // eslint-disable-next-line
 import { motion, AnimatePresence, StepId } from "framer-motion";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Check, Eye, Clock, Archive } from "lucide-react";
 
 export interface AnimeCardData {

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useEffect, useState, MouseEvent } from "react";
 import { fetchAnime } from "../data/anime";
 import ExpandableText from "../components/ExpandableText/ExpandableText";
@@ -6,7 +6,7 @@ import ExpandableText from "../components/ExpandableText/ExpandableText";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../data/authStore";
 import StatusSelector from "../components/StatusSelector/StatusSelector";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 interface AnimeInfoData {
   mal_id: number;

@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { AnimatePresence, motion } from "framer-motion";
-import { NavLink, Link, NavLinkProps } from "react-router";
+import { NavLink, Link, NavLinkProps } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useAuthStore } from "../../data/authStore";
 import { User, LogOut } from "lucide-react";

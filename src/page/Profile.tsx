@@ -7,14 +7,23 @@ import AnimeList from "../components/AnimeList/AnimeList";
 const Profile = () => {
   const { user, logOut } = useAuthStore();
 
-  // Форматування дати створення акаунту (з timestamp Firebase)
-  const joinDate = new Date(
-    parseInt(user?.metadata?.createdAt),
-  ).toLocaleDateString("uk-UA", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
+
+  const creationTime = user?.metadata?.creationTime;
+
+  const joinDate = creationTime
+    ? new Date(creationTime).toLocaleDateString("uk-UA", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "Unknown";
 
   return (
     <div className="min-h-screen px-4 py-10  text-white">
