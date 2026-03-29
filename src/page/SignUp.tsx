@@ -17,7 +17,6 @@ const SignUp = () => {
   const [nickname, setNickname] = useState(""); // Новий стан
   const [file, setFile] = useState<File | null>(null); // Стан для файлу картинки
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null); // Для попереднього перегляду
-
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // Щоб блокувати кнопку під час завантаження
